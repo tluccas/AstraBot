@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.example.config.Config;
 import org.example.views.BotListener;
+import org.example.views.ReadyListener;
+import org.example.views.SlashComandoListener;
 
 import java.io.IOException;
 
@@ -18,11 +20,11 @@ public class Main {
                     GatewayIntent.MESSAGE_CONTENT,
                     GatewayIntent.GUILD_VOICE_STATES,
                     GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
-                    GatewayIntent.SCHEDULED_EVENTS).addEventListeners(new BotListener()).build();
+                    GatewayIntent.SCHEDULED_EVENTS).addEventListeners(new BotListener(),
+                    new SlashComandoListener(),
+                    new ReadyListener()).build();
             builder.awaitReady();
 
-
-            builder.getPresence().setActivity(Activity.playing("Java"));
 
             System.out.println("Bot iniciado :)");
             System.out.println("Servidores conectados: " + builder.getGuilds().size());

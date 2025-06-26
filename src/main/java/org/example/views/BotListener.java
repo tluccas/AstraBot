@@ -15,7 +15,7 @@ public class BotListener extends ListenerAdapter {
 
         String msg = event.getMessage().getContentRaw();
         if (msg.startsWith("*")) {
-            comandoHandler.handle(event); //Chama o controller para lidar com o conteúdo da mensagem
+            comandoHandler.handlePrefixo(event); //Chama o controller para lidar com o conteúdo da mensagem
         }
     }
 }
