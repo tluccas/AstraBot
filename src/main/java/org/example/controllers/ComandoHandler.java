@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.example.comandos.*;
 import org.example.comandos.testes.TesteBoasVindasComando;
@@ -68,7 +69,9 @@ public class ComandoHandler {
         }
     }
 
-    public Map<String, Comando> getComandos() {
-        return comandos;
+    public TreeMap<String, Comando> getComandos() {
+        TreeMap<String, Comando> comandosOrdenados = new TreeMap<>(comandos);
+        return comandosOrdenados;
+
     }
 }
