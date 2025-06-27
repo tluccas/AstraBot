@@ -6,24 +6,38 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+
 import org.example.comandos.*;
+import org.example.comandos.testes.TesteBoasVindasComando;
+import org.example.dao.GuildJoinMessageDAO;
 import org.example.models.Comando;
+import org.example.models.ComandoSlash;
 
 public class ComandoHandler {
 
     private final Map<String, Comando> comandos = new HashMap<>();
 
+
     public ComandoHandler() {
         registrarComando(new PongComando());
         registrarComando(new ComandoHelp(ComandoHandler.this));
         registrarComando(new ComandoAI());
+        registrarComando(new SetMsgWelcomeComando(new GuildJoinMessageDAO()));
+        registrarComando(new SetMsgWelcomeChannelComando(new GuildJoinMessageDAO()));
         // Adicionar novos comandos aqui
+
+        //Comandos de teste
+        registrarComando(new TesteBoasVindasComando(new GuildJoinMessageDAO()));
     }
+
 
     private void registrarComando(Comando comando) {
-        comandos.put(comando.getNomeComando(), comando);
+        comandos.put(comando.getNomeComando().toLowerCase(), comando);
 
     }
+
+
 
     public void handlePrefixo(MessageReceivedEvent event) {
         String prefixo = "*";
@@ -47,7 +61,8 @@ public class ComandoHandler {
     public void handleSlash(SlashCommandInteractionEvent event, String nomeComando) {
         Comando comando = comandos.get(nomeComando);
         if (comando != null) {
-            comando.executarSlash(event);  // Um método novo que você cria no seu Comando para Slash
+            comando.executarSlash(event);
+            // Um método novo que você cria no seu Comando para Slash
         } else {
             event.reply("Comando não encontrado.").setEphemeral(true).queue();
         }

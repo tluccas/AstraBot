@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.example.config.Config;
 import org.example.views.BotListener;
+import org.example.views.GuildMemberJoinListener;
 import org.example.views.ReadyListener;
 import org.example.views.SlashComandoListener;
 
@@ -22,7 +23,7 @@ public class Main {
                     GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
                     GatewayIntent.SCHEDULED_EVENTS).addEventListeners(new BotListener(),
                     new SlashComandoListener(),
-                    new ReadyListener()).build();
+                    new ReadyListener(), new GuildMemberJoinListener()).build();
             builder.awaitReady();
 
 
