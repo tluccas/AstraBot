@@ -26,15 +26,17 @@ public class GuildJoinMessageDAO {
 
     //Salva a mensagem no db
     public void salvarMensagem(long guildId, String mensagem, String imagemurl) {
-        String sql = "UPDATE guild_join_message SET mensagem = ?, iamgem_url = ? WHERE guild_id = ?";
+        String sql = "UPDATE guild_join_message SET mensagem = ?, imagem_url = ? WHERE guild_id = ?";
 
         try (Connection conn = DataBaseConexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, mensagem);
             stmt.setString(2, imagemurl);
-            stmt.setLong(2, guildId);
-            stmt.executeUpdate();
+            stmt.setLong(3, guildId);
+
+            int linhasAfetadas = stmt.executeUpdate();
+            System.out.println("Linhas afetadas: " + linhasAfetadas);
 
         } catch (SQLException e) {
             e.printStackTrace();

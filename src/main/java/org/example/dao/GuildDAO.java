@@ -12,7 +12,8 @@ public class GuildDAO {
 
     // Salva ou atualiza uma guild no banco
     public void salvarGuild(GuildModel guildModel) {
-        String sql = "REPLACE INTO guild (guild_id, nome) VALUES (?, ?)";
+        String sql = "INSERT INTO guild (guild_id, nome) VALUES (?, ?) " +
+                "ON DUPLICATE KEY UPDATE nome = VALUES(nome)";
 
         try (Connection conn = DataBaseConexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

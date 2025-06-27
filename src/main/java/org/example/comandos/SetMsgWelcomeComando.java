@@ -22,7 +22,8 @@ public class SetMsgWelcomeComando implements Comando {
 
     @Override
     public String getDescricao() {
-        return "Define sua mensagem de boas vindas personalizada, {user} para mensionar usuarios";
+        return "Define sua mensagem de boas vindas personalizada (use {user} para mensionar usuarios)" +
+                " adicione uma imagem ou gif (opcional)";
     }
 
     @Override

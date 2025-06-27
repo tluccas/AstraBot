@@ -37,8 +37,8 @@ public class ReadyListener extends ListenerAdapter {
                 Commands.slash("setcanalboasvindas", "Define o canal onde as mensagens " +
                         "de boas vindas serão enviadas").addOption(OptionType.CHANNEL, "canal", "Canal de boas-vindas", true),
                 Commands.slash("setboasvindas", "Define sua mensagem de boas-vindas personalizada")
-                        .addOption(OptionType.STRING, "mensagem", "Mensagem de boas-vindas (use {user} para mencionar o usuário)", true)
-                        .addOption(OptionType.STRING, "imagem/gif", "URL da imagem que será exibida (opcional)", false)
+                        .addOption(OptionType.STRING, "mensagem", "Mensagem de boas-vindas (use {user} para mencionar o usuário), adicione uma imagem ou gif (opcional)", true)
+                        .addOption(OptionType.STRING, "imagem", "URL da imagem que será exibida (opcional)", false)
 
         ).queue();
 
