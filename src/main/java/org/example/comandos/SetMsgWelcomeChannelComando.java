@@ -1,5 +1,7 @@
 package org.example.comandos;
 
+import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.example.dao.GuildDAO;
@@ -38,6 +40,14 @@ public class SetMsgWelcomeChannelComando implements Comando {
         var canal = event.getOption("canal").getAsChannel();
         long guildID = event.getGuild().getIdLong();
         long canalId = canal.getIdLong();
+        //Verificando se o usuario é Administrador ou Mod
+        Member member = event.getMember();
+
+        if (member == null || !member.hasPermission(Permission.ADMINISTRATOR)){
+            event.reply("Apenas um administrador pode executar esse comando " +
+                    "<a:catocolorido:1388193166292942968>").setEphemeral(true).queue();
+            return;
+        }
 
         dao.salvarCanal(guildID, canalId);
 

@@ -4,16 +4,14 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.example.comandos.*;
 import org.example.comandos.testes.TesteBoasVindasComando;
 import org.example.dao.GuildJoinMessageDAO;
 import org.example.models.Comando;
 import org.example.models.ComandoSlash;
+import org.example.services.CommandRegistryService;
 
 public class ComandoHandler {
 
@@ -21,15 +19,12 @@ public class ComandoHandler {
 
 
     public ComandoHandler() {
-        registrarComando(new PongComando());
-        registrarComando(new ComandoHelp(ComandoHandler.this));
-        registrarComando(new ComandoAI());
-        registrarComando(new SetMsgWelcomeComando(new GuildJoinMessageDAO()));
-        registrarComando(new SetMsgWelcomeChannelComando(new GuildJoinMessageDAO()));
-        // Adicionar novos comandos aqui
+        List<Comando> comandosList = CommandRegistryService.getComandos();
+        for (Comando c : comandosList) {
+            registrarComando(c);
+        }
 
-        //Comandos de teste
-        registrarComando(new TesteBoasVindasComando(new GuildJoinMessageDAO()));
+        registrarComando(new ComandoHelp(ComandoHandler.this));
     }
 
 
@@ -37,7 +32,6 @@ public class ComandoHandler {
         comandos.put(comando.getNomeComando().toLowerCase(), comando);
 
     }
-
 
 
     public void handlePrefixo(MessageReceivedEvent event) {
