@@ -7,16 +7,14 @@ public class User {
     private long user_id;
     private long guild_id;
     private String user_nome;
-    private String user_avatar;
     private boolean daily; //Boolean para controle de resgate diário
     private LocalDate ultimo_resgate;
 
 
-    public User(long user_id, long guild_id, String user_nome, String user_avatar, boolean daily, LocalDate ultimo_resgate) {
+    public User(long user_id, long guild_id, String user_nome, boolean daily, LocalDate ultimo_resgate) {
         this.user_id = user_id;
         this.guild_id = guild_id;
         this.user_nome = user_nome;
-        this.user_avatar = user_avatar;
         this.daily = daily;
         this.ultimo_resgate = ultimo_resgate;
     }
@@ -43,14 +41,6 @@ public class User {
 
     public void setUser_nome(String user_nome) {
         this.user_nome = user_nome;
-    }
-
-    public String getUser_avatar() {
-        return user_avatar;
-    }
-
-    public void setUser_avatar(String user_avatar) {
-        this.user_avatar = user_avatar;
     }
 
     public boolean isDaily() {

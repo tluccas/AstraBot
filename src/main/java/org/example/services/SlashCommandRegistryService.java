@@ -30,6 +30,8 @@ public class SlashCommandRegistryService {
                 .addOption(OptionType.STRING, "imagem", "URL da imagem que será exibida (opcional)", false));
         comandos.add(Commands.slash("limpar", "Limpa uma quantidade escolhida de mensagens (máx 100 mensagens)")
                 .addOption(OptionType.INTEGER, "quantidade", "Quantidade de mensagens", true));
+        comandos.add(Commands.slash("daily", "Resgate seus pontos diários"));
+        comandos.add(Commands.slash("ranking", "Exibe o ranking do servidor"));
 
         return comandos;
     }

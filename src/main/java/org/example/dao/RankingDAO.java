@@ -15,15 +15,15 @@ public class RankingDAO {
 
     // Salva ou atualiza um ranking (pontos) de um usuário em um servidor
     public void salvarRanking(Ranking ranking) {
-        String sql = "INSERT INTO ranking (user_id, guild_id, pontos) VALUES (?, ?, ?) " +
-                "ON DUPLICATE KEY UPDATE pontos = VALUES(pontos)";
+        String sql = "INSERT INTO ranking (guild_id, user_id, user_pontos) VALUES (?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE user_pontos = VALUES(user_pontos)";
 
         try (Connection conn = DataBaseConexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setLong(1, ranking.getGuild_id());
             stmt.setLong(2, ranking.getUser_id());
-            stmt.setInt(3, ranking.getPontos());
+            stmt.setInt(3, ranking.getUser_pontos());
             stmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -46,7 +46,7 @@ public class RankingDAO {
                     return new Ranking(
                             rs.getLong("guild_id"),
                             rs.getLong("user_id"),
-                            rs.getInt("pontos")
+                            rs.getInt("user_pontos")
                     );
                 }
             }
@@ -75,7 +75,7 @@ public class RankingDAO {
 
     // Lista o ranking (top N) de um servidor, ordenado por pontos decrescentes
     public List<Ranking> listarRankingPorGuild(long guildId, int limite) {
-        String sql = "SELECT * FROM ranking WHERE guild_id = ? ORDER BY pontos DESC LIMIT ?";
+        String sql = "SELECT * FROM ranking WHERE guild_id = ? ORDER BY user_pontos DESC LIMIT ?";
         List<Ranking> lista = new ArrayList<>();
 
         try (Connection conn = DataBaseConexao.getConnection();
@@ -89,7 +89,7 @@ public class RankingDAO {
                     lista.add(new Ranking(
                             rs.getLong("guild_id"),
                             rs.getLong("user_id"),
-                            rs.getInt("pontos")
+                            rs.getInt("user_pontos")
                     ));
                 }
             }

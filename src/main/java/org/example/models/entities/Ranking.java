@@ -4,12 +4,12 @@ public class Ranking {
 
     private long guild_id;
     private long user_id;
-    private int pontos;
+    private int user_pontos;
 
-    public Ranking(long guild_id, long user_id, int pontos) {
+    public Ranking(long guild_id, long user_id, int user_pontos) {
         this.guild_id = guild_id;
         this.user_id = user_id;
-        this.pontos = pontos;
+        this.user_pontos = user_pontos;
     }
     public long getGuild_id() {
         return guild_id;
@@ -27,12 +27,12 @@ public class Ranking {
         this.user_id = user_id;
     }
 
-    public int getPontos() {
-        return pontos;
+    public int getUser_pontos() {
+        return user_pontos;
     }
 
-    public void setPontos(int pontos) {
-        this.pontos = pontos;
+    public void setUser_pontos(int user_pontos) {
+        this.user_pontos = user_pontos;
     }
 
 }

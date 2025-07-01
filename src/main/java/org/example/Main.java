@@ -27,8 +27,8 @@ public class Main {
             builder.awaitReady();
 
 
-            System.out.println("Bot iniciado :)");
-            System.out.println("Servidores conectados: " + builder.getGuilds().size());
+            System.out.println("\n\nBot iniciado");
+            System.out.println("\n\nServidores conectados: " + builder.getGuilds().size());
         } catch (Exception e) {
             System.out.println("Erro ao iniciar o bot: " + e.getMessage());
         }

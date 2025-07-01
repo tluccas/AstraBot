@@ -13,27 +13,27 @@ public class UserDAO {
 
     // Salva ou atualiza um usuário no banco
     public void salvarUser(User user) {
-        String sql = "INSERT INTO user (user_id, guild_id, user_nome, user_avatar, daily, ultima_acao) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?) " +
+        String sql = "INSERT INTO user (user_id, guild_id, user_nome, daily, ultimo_resgate) " +
+                "VALUES (?, ?, ?, ?, ?) " +
                 "ON DUPLICATE KEY UPDATE " +
                 "guild_id = VALUES(guild_id), " +
                 "user_nome = VALUES(user_nome), " +
-                "user_avatar = VALUES(user_avatar), " +
                 "daily = VALUES(daily), " +
-                "ultima_acao = VALUES(ultima_acao)";
+                "ultimo_resgate = VALUES(ultimo_resgate)";
 
         try (Connection conn = DataBaseConexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setLong(1, user.getUser_id());
-            stmt.setLong(2, user.getGuild_id());
-            stmt.setString(3, user.getUser_nome());
-            stmt.setString(4, user.getUser_avatar());
-            stmt.setBoolean(5, user.isDaily());
+            stmt.setLong(1, user.getUser_id());                      // ID do usuário
+            stmt.setLong(2, user.getGuild_id());                    // ID do servidor (guild)
+            stmt.setString(3, user.getUser_nome());                 // Nome do usuário
+            stmt.setBoolean(4, user.isDaily());                     // Status de daily (true/false)
+
+            // Verifica se há data de último resgate
             if (user.getUltimo_resgate() != null) {
-                stmt.setDate(6, java.sql.Date.valueOf(user.getUltimo_resgate()));
+                stmt.setDate(5, java.sql.Date.valueOf(user.getUltimo_resgate()));
             } else {
-                stmt.setDate(6, null);
+                stmt.setDate(5, null);
             }
 
             stmt.executeUpdate();
@@ -63,7 +63,6 @@ public class UserDAO {
                             rs.getLong("user_id"),
                             rs.getLong("guild_id"),
                             rs.getString("user_nome"),
-                            rs.getString("user_avatar"),
                             rs.getBoolean("daily"),
                             ultimo_resgate
                     );

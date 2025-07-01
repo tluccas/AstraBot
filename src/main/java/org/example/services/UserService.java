@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 public class UserService {
 
+    //Aplicação futura na logica de comando comando daily
     public boolean podeFazerDaily(long userId, Connection conn) throws SQLException {
         LocalDate hoje = LocalDate.now();
 
