@@ -100,7 +100,7 @@ public class AiService {
                 }
             }
 
-            // ✅ NOVO: Log de erro de estrutura inesperada
+            // NOVO: Log de erro de estrutura inesperada
             System.out.println("⚠️ Estrutura inesperada na resposta da IA: " + responseBody);
             return "A IA não retornou uma resposta válida.";
 
