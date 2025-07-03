@@ -14,7 +14,7 @@ public class MemoriaIADAO {
     //Método para salvar a memoria de mensagens que o usuário troca com a IA
     public void salvarMemoria(MemoriaIA memoria) {
         String sql = "INSERT INTO ia_memoria (user_id, conteudo, tokens) VALUES (?, ?, ?)" +
-                " ON DUPLICATE KEY UPDATE conteudo = VALUES(conteudo)," +
+                " ON DUPLICATE KEY UPDATE conteudo = VALUES(conteudo), " +
                 " tokens = VALUES(tokens)";
 
         try (Connection conn = DataBaseConexao.getConnection();
@@ -57,4 +57,17 @@ public class MemoriaIADAO {
 
             return null;
         }
+
+    public void limparMemoria(long userID) {
+        String sql = "UPDATE ia_memoria SET conteudo = '', tokens = 0 WHERE user_id = ?";
+        try (Connection conn = DataBaseConexao.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setLong(1, userID);
+            stmt.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Erro ao limpar memória: " + e.getMessage());
+        }
+    }
     }

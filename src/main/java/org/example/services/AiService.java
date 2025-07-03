@@ -4,6 +4,7 @@ import com.google.gson.*;
 import io.github.cdimascio.dotenv.Dotenv;
 import okhttp3.*;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 public class AiService {
 
@@ -17,65 +18,105 @@ public class AiService {
     private final OkHttpClient client = new OkHttpClient();
     private final Gson gson = new Gson();
 
-    // Método principal: envia uma pergunta para a IA e retorna a resposta
-    public String obterResposta(String pergunta) {
-        // Monta o corpo da requisição (JSON que será enviado)
-        JsonObject body = new JsonObject();
-        body.addProperty("model", MODEL);
+    private int totalTokens = 0;
 
-        // Cria um array de mensagens
+    public String obterResposta(String pergunta, String memoriaAnterior) {
+        JsonObject body = new JsonObject();
+        body.addProperty("model", MODEL); // Define o modelo da IA a ser usado
+
         JsonArray messages = new JsonArray();
 
-        //Definindo a personalidade da AI
+        // Definindo a personalidade da IA
         String personalidade = dotenv.get("PERSONALIDADE");
         JsonObject systemMensagem = new JsonObject();
         systemMensagem.addProperty("role", "system");
         systemMensagem.addProperty("content", personalidade);
+        messages.add(systemMensagem); // Adiciona mensagem de sistema
 
+        // NOVO: Adiciona mensagens da memória anterior do usuário (caso exista)
+        if (memoriaAnterior != null && !memoriaAnterior.isBlank()) {
+            String[] linhas = memoriaAnterior.split("\n");
+            for (String linha : linhas) {
+                if (linha.startsWith("Usuário: ")) {
+                    JsonObject userMsg = new JsonObject();
+                    userMsg.addProperty("role", "user");
+                    userMsg.addProperty("content", linha.replace("Usuário: ", ""));
+                    messages.add(userMsg);
+                } else if (linha.startsWith("IA: ")) {
+                    JsonObject aiMsg = new JsonObject();
+                    aiMsg.addProperty("role", "assistant");
+                    aiMsg.addProperty("content", linha.replace("IA: ", ""));
+                    messages.add(aiMsg);
+                }
+            }
+        }
 
-        // Cria a mensagem do usuário
+        // Mensagem atual do usuário
         JsonObject usuarioMensagem = new JsonObject();
-        usuarioMensagem.addProperty("role", "user"); // Quem está falando (user)
-        usuarioMensagem.addProperty("content", pergunta); // A pergunta em si
-
-        // Adiciona as mensagens ao array de mensagens
-        messages.add(systemMensagem);
+        usuarioMensagem.addProperty("role", "user");
+        usuarioMensagem.addProperty("content", pergunta);
         messages.add(usuarioMensagem);
-        body.add("messages", messages); // Adiciona ao corpo final da requisição
 
-        // Constrói a requisição HTTP POST
+        body.add("messages", messages);
+
         Request request = new Request.Builder()
                 .url(API_URL)
-                .addHeader("Authorization", "Bearer " + API_KEY) // Autenticação
+                .addHeader("Authorization", "Bearer " + API_KEY)
                 .addHeader("Content-Type", "application/json")
-                .post(RequestBody.create(gson.toJson(body), MediaType.parse("application/json"))) // Converte o JSON para string e envia
+                .post(RequestBody.create(gson.toJson(body), MediaType.parse("application/json")))
                 .build();
 
-        // Envia a requisição e trata a resposta
         try (Response response = client.newCall(request).execute()) {
 
-            // Verifica se a resposta foi bem-sucedida
             if (!response.isSuccessful()) {
-                return "Erro na requisição: " + response.code();
+                return "Erro da IA (código " + response.code() + "): " + response.message();
             }
 
-            // Lê o corpo da resposta da API
             String responseBody = response.body().string();
-            System.out.println("Resposta da API: " + responseBody);
+            System.out.println("Resposta da API: " + responseBody); // Log de debug
 
-            // Interpreta a string como JSON
             JsonObject json = JsonParser.parseString(responseBody).getAsJsonObject();
 
-            // Extrai a resposta da IA no campo "choices[0].message.content"
-            return json.getAsJsonArray("choices")
-                    .get(0).getAsJsonObject()
-                    .getAsJsonObject("message")
-                    .get("content").getAsString();
+            // NOVO: Armazena os tokens usados na resposta (se houver)
+            if (json.has("usage") && json.get("usage").isJsonObject()) {
+                this.totalTokens = json.getAsJsonObject("usage").get("total_tokens").getAsInt();
+            }
 
+            JsonArray choices = json.getAsJsonArray("choices");
+            if (choices != null && choices.size() > 0) {
+                JsonObject choice = choices.get(0).getAsJsonObject();
+
+                // ✅ NOVO: Verificação segura do campo "message"
+                if (choice.has("message") && choice.get("message").isJsonObject()) {
+                    JsonObject messageObj = choice.getAsJsonObject("message");
+                    if (messageObj.has("content")) {
+                        return messageObj.get("content").getAsString();
+                    }
+                }
+
+                // ✅ NOVO: Suporte alternativo para formato com "text" (ex: completions)
+                if (choice.has("text") && choice.get("text").isJsonPrimitive()) {
+                    return choice.get("text").getAsString();
+                }
+            }
+
+            // ✅ NOVO: Log de erro de estrutura inesperada
+            System.out.println("⚠️ Estrutura inesperada na resposta da IA: " + responseBody);
+            return "A IA não retornou uma resposta válida.";
+
+        } catch (SocketTimeoutException e) {
+            System.out.println("⏱️ Timeout na requisição para IA.");
+            return "⏳ A IA demorou demais para responder. Tente novamente em instantes.";
         } catch (IOException e) {
-
             e.printStackTrace();
-            return "Erro ao se comunicar com a IA.";
+            return "❌ Erro ao tentar se comunicar com a IA.";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "❌ Ocorreu um erro inesperado ao processar a resposta da IA.";
         }
+    }
+
+    public int getTokens() {
+            return totalTokens;
     }
 }
