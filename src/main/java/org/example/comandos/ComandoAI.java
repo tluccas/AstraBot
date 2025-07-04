@@ -1,8 +1,9 @@
 package org.example.comandos;
 
-import net.dv8tion.jda.api.entities.User;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.example.dao.MemoriaIADAO;
 import org.example.models.Comando;
 import org.example.models.entities.MemoriaIA;
@@ -65,8 +66,11 @@ public class ComandoAI implements Comando {
     //Metodo executar adaptado para slash command
     @Override
     public void executarSlash(SlashCommandInteractionEvent event) {
+
+        if(event.getGuild() != null) {
         // recebe a mensagem
-        String pergunta = event.getOption("olá") != null ? event.getOption("olá").getAsString() : "";
+        OptionMapping opcao = event.getOption("olá");
+        String pergunta = (opcao != null) ? opcao.getAsString() : "";
 
         if (pergunta.isBlank()) {
             event.reply("Você precisa perguntar ou falar algo, exemplo: `/astra pergunta: qual a melhor equipe da Formula 1` (Ferrari) <a:idontcare:1387821007955296256>")
@@ -107,5 +111,8 @@ public class ComandoAI implements Comando {
 
         // Envia a resposta
         event.getHook().sendMessage(resposta).queue();
+        } else {
+            event.reply("Este comando só pode ser usado em um servidor.").setEphemeral(true).queue();
+        }
     }
 }

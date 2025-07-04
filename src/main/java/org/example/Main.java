@@ -2,7 +2,6 @@ package org.example;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.example.config.Config;
 import org.example.views.BotListener;
@@ -10,10 +9,9 @@ import org.example.views.GuildMemberJoinListener;
 import org.example.views.ReadyListener;
 import org.example.views.SlashComandoListener;
 
-import java.io.IOException;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         final Config config = new Config();
         try {
             JDA builder = JDABuilder.createDefault(config.getBot_token(),

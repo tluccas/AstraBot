@@ -1,7 +1,6 @@
 package org.example.comandos;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.example.dao.RankingDAO;
@@ -9,7 +8,6 @@ import org.example.models.Comando;
 import org.example.models.entities.Ranking;
 import org.example.services.RankingService;
 
-import java.awt.*;
 import java.util.List;
 
 public class RankingComando implements Comando {

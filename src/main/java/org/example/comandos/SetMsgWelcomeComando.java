@@ -4,9 +4,9 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.example.dao.GuildJoinMessageDAO;
 import org.example.models.Comando;
-import org.example.models.ComandoSlash;
 import org.example.models.entities.GuildJoinMessage;
 
 public class SetMsgWelcomeComando implements Comando {
@@ -35,6 +35,8 @@ public class SetMsgWelcomeComando implements Comando {
 
     @Override
     public void executarSlash(SlashCommandInteractionEvent event) {
+
+        if (event.getGuild() != null){
         long guildId = event.getGuild().getIdLong();
         //Verificando se o usuario é Administrador ou Mod
         Member member = event.getMember();
@@ -51,11 +53,17 @@ public class SetMsgWelcomeComando implements Comando {
                     "/setcanalboasvindas").setEphemeral(true).queue();
             return;
         }
+        //Tratamento de nullpointException :)
+        OptionMapping mensagemOpt = event.getOption("user");
+        OptionMapping imagemOpt = event.getOption("imagem");
 
-        String mensagem = event.getOption("mensagem").getAsString(); // recebe a mensagem do usuario
-        String imagemUrl = event.getOption("imagem") != null ? event.getOption("imagem").getAsString() : null;
+        String mensagem = (mensagemOpt != null) ? mensagemOpt.getAsString() : null;// recebe a mensagem do usuario
+        String imagemUrl = (imagemOpt != null) ? imagemOpt.getAsString() : null;
         dao.salvarMensagem(guildId, mensagem, imagemUrl); //salva no banco
 
         event.reply("Mensagem atualizada com sucesso! <a:feliz:1388200507771977832>").setEphemeral(true).queue();
+    }else{
+            event.reply("Este comando só pode ser usado em um servidor.").setEphemeral(true).queue();
+        }
     }
 }

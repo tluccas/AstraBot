@@ -34,7 +34,7 @@ public class LimparComando implements Comando {
         if (quantidade > 1 && quantidade <= 100) {
         canal.getHistory().retrievePast(quantidade).queue(messages ->
                 canal.deleteMessages(messages).queue(
-                        success -> event.getChannel().sendMessage("<a:ClubPenguinDance:1388352786303025283> Mensagens deletadas!").queue(),
+                        _/*sucess*/ -> event.getChannel().sendMessage("<a:ClubPenguinDance:1388352786303025283> Mensagens deletadas!").queue(),
                         error -> event.getChannel().sendMessage("⚠️ Erro ao deletar mensagens: " + error.getMessage()).queue()
                 )
         );
@@ -63,7 +63,7 @@ public class LimparComando implements Comando {
         if (quantidade > 1 && quantidade <= 100) {
             canal.getHistory().retrievePast(quantidade).queue(messages ->
                     canal.deleteMessages(messages).queue(
-                            success -> event.reply("<a:ClubPenguinDance:1388352786303025283> Mensagens deletadas!").queue(),
+                            _ /*sucess*/ -> event.reply("<a:ClubPenguinDance:1388352786303025283> Mensagens deletadas!").queue(),
                             error -> event.reply("⚠️ Erro ao deletar mensagens: " + error.getMessage()).queue()
                     )
             );

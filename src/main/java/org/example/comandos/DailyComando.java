@@ -70,38 +70,43 @@ public class DailyComando implements Comando {
 
     @Override
     public void executarSlash(SlashCommandInteractionEvent event) {
-        long userID = event.getUser().getIdLong();
-        long guildID = event.getGuild().getIdLong();
 
-        // Obtém ou cria usuário
-        User user = userDAO.obterUser(userID);
-        if (user == null) {
-            String userNome = event.getUser().getName();
-            user = new User(userID, guildID, userNome);
-            userDAO.salvarUser(user);
+        if (event.getGuild() != null) {
+            long userID = event.getUser().getIdLong();
+            long guildID = event.getGuild().getIdLong();
+
+            // Obtém ou cria usuário
+            User user = userDAO.obterUser(userID);
+            if (user == null) {
+                String userNome = event.getUser().getName();
+                user = new User(userID, guildID, userNome);
+                userDAO.salvarUser(user);
+            }
+
+            // Obtém ou cria ranking
+            Ranking userRanking = rankingDAO.obterRanking(userID, guildID);
+            if (userRanking == null) {
+                userRanking = new Ranking(guildID, userID, 0, false, null);
+            }
+
+            // Verifica se já fez o daily hoje
+            LocalDate hoje = LocalDate.now();
+            if (hoje.equals(userRanking.getUltimo_resgate())) {
+                event.reply("<a:erro:1389606208519802880> " + event.getUser().getAsMention()
+                        + " Você já realizou seu resgate diário!").setEphemeral(true).queue();
+                return;
+            }
+
+            // Atualiza ranking (pontos +100)
+            userRanking.setUser_pontos(userRanking.getUser_pontos() + 100);
+            userRanking.setDaily(true);
+            userRanking.setUltimo_resgate(hoje);
+            rankingDAO.salvarRanking(userRanking);
+
+            event.reply("<a:money:1389606252660658367> "
+                    + event.getUser().getAsMention() + " resgatou **100** pontos!").queue();
+        } else {
+            event.reply("Este comando só pode ser usado em um servidor.").setEphemeral(true).queue();
         }
-
-        // Obtém ou cria ranking
-        Ranking userRanking = rankingDAO.obterRanking(userID, guildID);
-        if (userRanking == null) {
-            userRanking = new Ranking(guildID, userID, 0, false, null);
-        }
-
-        // Verifica se já fez o daily hoje
-        LocalDate hoje = LocalDate.now();
-        if (hoje.equals(userRanking.getUltimo_resgate())) {
-            event.reply("<a:erro:1389606208519802880> " + event.getUser().getAsMention()
-                    + " Você já realizou seu resgate diário!").setEphemeral(true).queue();
-            return;
-        }
-
-        // Atualiza ranking (pontos +100)
-        userRanking.setUser_pontos(userRanking.getUser_pontos() + 100);
-        userRanking.setDaily(true);
-        userRanking.setUltimo_resgate(hoje);
-        rankingDAO.salvarRanking(userRanking);
-
-        event.reply("<a:money:1389606252660658367> "
-                + event.getUser().getAsMention() + " resgatou **100** pontos!").queue();
     }
 }

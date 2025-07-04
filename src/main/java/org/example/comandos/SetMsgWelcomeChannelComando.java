@@ -4,10 +4,10 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import org.example.dao.GuildDAO;
+import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.example.dao.GuildJoinMessageDAO;
 import org.example.models.Comando;
-import org.example.models.ComandoSlash;
+
 
 public class SetMsgWelcomeChannelComando implements Comando {
 
@@ -36,10 +36,11 @@ public class SetMsgWelcomeChannelComando implements Comando {
     }
     @Override
     public void executarSlash(SlashCommandInteractionEvent event) {
-
-        var canal = event.getOption("canal").getAsChannel();
+        if (event.getGuild() != null) {
+        OptionMapping opcao = event.getOption("canal");
+        var canal = (opcao != null) ? opcao.getAsChannel() : null;
         long guildID = event.getGuild().getIdLong();
-        long canalId = canal.getIdLong();
+        long canalId = (canal != null) ? canal.getIdLong() : -1L; //antes canal.getIdLong();
         //Verificando se o usuario é Administrador ou Mod
         Member member = event.getMember();
 
@@ -51,7 +52,13 @@ public class SetMsgWelcomeChannelComando implements Comando {
 
         dao.salvarCanal(guildID, canalId);
 
-        event.reply("Canal de boas-vindas definido para: " + canal.getName()).queue();
-
+        if (canal != null) {
+            event.reply("Canal de boas-vindas definido para: " + canal.getName()).queue();
+        }else{
+            event.reply("ERRO ao definir canal").queue();
+        }
+    }else{
+            event.reply("Este comando só pode ser usado em um servidor.").setEphemeral(true).queue();
+        }
     }
 }
