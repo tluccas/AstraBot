@@ -44,7 +44,8 @@ public class ComandoAI implements Comando {
         int tokensDaResposta = aiService.getTokens();
 
         if (memoria == null) {
-            memoria = new MemoriaIA(userID, pergunta, tokensDaResposta);
+            String conteudo = "\nUsuário: " + pergunta + "\nIA: " + resposta;
+            memoria = new MemoriaIA(userID, conteudo, tokensDaResposta);
         } else {
 
             if (memoria.getTokens() + tokensDaResposta > 150.000) {
@@ -93,7 +94,8 @@ public class ComandoAI implements Comando {
         int tokensDaResposta = aiService.getTokens();
 
         if (memoria == null) {
-            memoria = new MemoriaIA(userID, pergunta, tokensDaResposta);
+            String conteudo = "\nUsuário: " + pergunta + "\nIA: " + resposta;
+            memoria = new MemoriaIA(userID, conteudo, tokensDaResposta);
         } else {
 
             if(memoria.getTokens() + tokensDaResposta > 150.000) {
