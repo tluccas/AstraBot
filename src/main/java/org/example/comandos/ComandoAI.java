@@ -31,14 +31,17 @@ public class ComandoAI implements Comando {
             return;
         }
 
+        event.getChannel().sendTyping().queue(); // o bot fica digitando
         long userID = event.getAuthor().getIdLong();
+
+
 
         MemoriaIA memoria = memoriaDAO.obterMemoria(userID);
         String memoriaAnterior = (memoria != null) ? memoria.getConteudo() : "";
 
         String pergunta = String.join(" ", args);
-        event.getChannel().sendTyping().queue(); // o bot fica digitando
         String resposta = aiService.obterResposta(pergunta, memoriaAnterior);
+
         event.getChannel().sendMessage(resposta).queue();
 
         int tokensDaResposta = aiService.getTokens();

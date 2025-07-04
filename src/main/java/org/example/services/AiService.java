@@ -33,9 +33,11 @@ public class AiService {
         systemMensagem.addProperty("content", personalidade);
         messages.add(systemMensagem); // Adiciona mensagem de sistema
 
-        // NOVO: Adiciona mensagens da memória anterior do usuário (caso exista)
+        // Adiciona mensagens da memória anterior do usuário (caso exista)
         if (memoriaAnterior != null && !memoriaAnterior.isBlank()) {
-            String[] linhas = memoriaAnterior.split("\n");
+            String memoriaLimitada = limitarMemoria(memoriaAnterior, 4000); // +/- 1000 tokens
+            String[] linhas = memoriaLimitada.split("\n");
+
             for (String linha : linhas) {
                 if (linha.startsWith("Usuário: ")) {
                     JsonObject userMsg = new JsonObject();
@@ -118,5 +120,21 @@ public class AiService {
 
     public int getTokens() {
             return totalTokens;
+    }
+
+    private String limitarMemoria(String memoriaAnterior, int limiteCaracteres) {
+        StringBuilder memoriaLimitada = new StringBuilder();
+        int total = 0;
+
+        String[] linhas = memoriaAnterior.split("\n");
+        for (int i = linhas.length - 1; i >= 0; i--) {
+            String linha = linhas[i];
+            if ((total + linha.length()) > limiteCaracteres) break;
+
+            memoriaLimitada.insert(0, linha + "\n");
+            total += linha.length();
+        }
+
+        return memoriaLimitada.toString();
     }
 }
