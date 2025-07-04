@@ -22,7 +22,7 @@ public class RankingComando implements Comando {
 
     @Override
     public String getNomeComando() {
-        return "ranking";
+        return "rank";
     }
 
     @Override

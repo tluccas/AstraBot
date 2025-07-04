@@ -46,7 +46,7 @@ public class ComandoAI implements Comando {
             memoria = new MemoriaIA(userID, pergunta, tokensDaResposta);
         } else {
 
-            if (memoria.getTokens() + tokensDaResposta > 70.000) {
+            if (memoria.getTokens() + tokensDaResposta > 150.000) {
                 memoriaDAO.limparMemoria(userID);    // zera o contador
             }
 
@@ -92,7 +92,7 @@ public class ComandoAI implements Comando {
             memoria = new MemoriaIA(userID, pergunta, tokensDaResposta);
         } else {
 
-            if(memoria.getTokens() + tokensDaResposta > 70.000) {
+            if(memoria.getTokens() + tokensDaResposta > 150.000) {
                 memoriaDAO.limparMemoria(userID);     // zera o contador
             }
 

@@ -31,7 +31,7 @@ public class SlashCommandRegistryService {
         comandos.add(Commands.slash("limpar", "Limpa uma quantidade escolhida de mensagens (máx 100 mensagens)")
                 .addOption(OptionType.INTEGER, "quantidade", "Quantidade de mensagens", true));
         comandos.add(Commands.slash("daily", "Resgate seus pontos diários"));
-        comandos.add(Commands.slash("ranking", "Exibe o ranking do servidor"));
+        comandos.add(Commands.slash("rank", "Exibe o ranking do servidor"));
 
         return comandos;
     }
