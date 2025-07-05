@@ -7,10 +7,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MemoriaIADAO {
 
-
+    private static final Logger logger = LoggerFactory.getLogger(MemoriaIADAO.class);
     //Método para salvar a memoria de mensagens que o usuário troca com a IA
     public void salvarMemoria(MemoriaIA memoria) {
         String sql = "INSERT INTO ia_memoria (user_id, conteudo, tokens) VALUES (?, ?, ?)" +
@@ -27,7 +29,7 @@ public class MemoriaIADAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] ao salvar memoria {}", e.getMessage());
         }
 
     }
@@ -52,7 +54,7 @@ public class MemoriaIADAO {
                 }
 
             }catch (SQLException e) {
-                e.printStackTrace();
+                logger.error("[ERRO] ao obter memoria do usuário {}", userID, e);
             }
 
             return null;
@@ -67,7 +69,7 @@ public class MemoriaIADAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            System.err.println("Erro ao limpar memória: " + e.getMessage());
+            logger.error("[ERRO] ao limpar memoria do usuário {}", userID, e);
         }
     }
     }

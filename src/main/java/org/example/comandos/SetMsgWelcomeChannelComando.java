@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.example.dao.GuildJoinMessageDAO;
 import org.example.models.Comando;
+import org.example.util.exceptions.NoGuildException;
 
 
 public class SetMsgWelcomeChannelComando implements Comando {
@@ -36,29 +37,34 @@ public class SetMsgWelcomeChannelComando implements Comando {
     }
     @Override
     public void executarSlash(SlashCommandInteractionEvent event) {
-        if (event.getGuild() != null) {
-        OptionMapping opcao = event.getOption("canal");
-        var canal = (opcao != null) ? opcao.getAsChannel() : null;
-        long guildID = event.getGuild().getIdLong();
-        long canalId = (canal != null) ? canal.getIdLong() : -1L; //antes canal.getIdLong();
-        //Verificando se o usuario é Administrador ou Mod
-        Member member = event.getMember();
 
-        if (member == null || !member.hasPermission(Permission.ADMINISTRATOR)){
-            event.reply("Apenas um administrador pode executar esse comando " +
-                    "<a:catocolorido:1388193166292942968>").setEphemeral(true).queue();
-            return;
-        }
+        try {
 
-        dao.salvarCanal(guildID, canalId);
+            if (event.getGuild() == null) {
+                throw new NoGuildException(event.getUser().getAsMention());
+            }
+            OptionMapping opcao = event.getOption("canal");
+            var canal = (opcao != null) ? opcao.getAsChannel() : null;
+            long guildID = event.getGuild().getIdLong();
+            long canalId = (canal != null) ? canal.getIdLong() : -1L; //antes canal.getIdLong();
+            //Verificando se o usuario é Administrador ou Mod
+            Member member = event.getMember();
 
-        if (canal != null) {
-            event.reply("Canal de boas-vindas definido para: " + canal.getName()).queue();
-        }else{
-            event.reply("ERRO ao definir canal").queue();
-        }
-    }else{
-            event.reply("Este comando só pode ser usado em um servidor.").setEphemeral(true).queue();
+            if (member == null || !member.hasPermission(Permission.ADMINISTRATOR)) {
+                event.reply("Apenas um administrador pode executar esse comando " +
+                        "<a:catocolorido:1388193166292942968>").setEphemeral(true).queue();
+                return;
+            }
+
+            dao.salvarCanal(guildID, canalId);
+
+            if (canal != null) {
+                event.reply("Canal de boas-vindas definido para: " + canal.getName()).queue();
+            } else {
+                event.reply("ERRO ao definir canal").queue();
+            }
+        } catch (NoGuildException e) {
+            event.reply(e.getMessage()).queue();
         }
     }
 }

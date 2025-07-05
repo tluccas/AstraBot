@@ -7,8 +7,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GuildJoinMessageDAO {
+
+    private static final Logger logger = LoggerFactory.getLogger(GuildJoinMessageDAO.class);
 
     public void salvarCanal(long guildId, long canalId) {
         String sql = "INSERT INTO guild_join_message (guild_id, canal_id) VALUES (?, ?) " +
@@ -20,7 +24,7 @@ public class GuildJoinMessageDAO {
             stmt.setLong(3, canalId);
             stmt.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] ao salvar Canal {} do Servidor: {}", canalId, guildId, e);
         }
     }
 
@@ -39,7 +43,7 @@ public class GuildJoinMessageDAO {
             System.out.println("Linhas afetadas: " + linhasAfetadas);
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] ao salvar Mensagem de Welcome do servidor {}", guildId, e);
         }
     }
 
@@ -60,7 +64,7 @@ public class GuildJoinMessageDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] ao obter Mensagem de Welcome do Servidor: {}", guildId, e);
         }
         return null;
     }

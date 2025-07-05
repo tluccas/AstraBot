@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.example.dao.UserDAO;
 import org.example.models.Comando;
+import org.example.util.exceptions.NoGuildException;
 
 import java.time.LocalDate;
 
@@ -70,8 +71,11 @@ public class DailyComando implements Comando {
 
     @Override
     public void executarSlash(SlashCommandInteractionEvent event) {
+        try{
 
-        if (event.getGuild() != null) {
+        if (event.getGuild() == null) {
+            throw new NoGuildException(event.getUser().getAsMention());
+        }
             long userID = event.getUser().getIdLong();
             long guildID = event.getGuild().getIdLong();
 
@@ -105,8 +109,8 @@ public class DailyComando implements Comando {
 
             event.reply("<a:money:1389606252660658367> "
                     + event.getUser().getAsMention() + " resgatou **100** pontos!").queue();
-        } else {
-            event.reply("Este comando só pode ser usado em um servidor.").setEphemeral(true).queue();
+        } catch (NoGuildException e) {
+            event.reply(e.getMessage()).queue();
         }
     }
 }

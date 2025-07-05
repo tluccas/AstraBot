@@ -7,9 +7,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class UserDAO {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
     // Salva ou atualiza um usuário no banco
     public void salvarUser(User user) {
@@ -29,7 +32,7 @@ public class UserDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] Ao salvar USUÁRIO\n\nID: {}\n\nNOME: {}", user.getUser_id(), user.getUser_nome(), e);
         }
     }
 
@@ -54,7 +57,7 @@ public class UserDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] Ao obter USUÁRIO: {}", userId, e);
         }
 
         return null;
@@ -71,7 +74,7 @@ public class UserDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] ao deletar USUÁRIO: {}", userId, e);
         }
     }
 }

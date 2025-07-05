@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import org.example.dao.GuildJoinMessageDAO;
 import org.example.models.Comando;
 import org.example.models.entities.GuildJoinMessage;
+import org.example.util.exceptions.NoGuildException;
 
 public class SetMsgWelcomeComando implements Comando {
     private final GuildJoinMessageDAO dao;
@@ -36,34 +37,38 @@ public class SetMsgWelcomeComando implements Comando {
     @Override
     public void executarSlash(SlashCommandInteractionEvent event) {
 
-        if (event.getGuild() != null){
-        long guildId = event.getGuild().getIdLong();
-        //Verificando se o usuario é Administrador ou Mod
-        Member member = event.getMember();
+        try {
 
-        if (member == null || !member.hasPermission(Permission.ADMINISTRATOR)){
-            event.reply("Apenas um administrador pode executar esse comando " +
-                    "<a:catocolorido:1388193166292942968>").setEphemeral(true).queue();
-            return;
-        }
+            if (event.getGuild() == null) {
+                throw new NoGuildException(event.getUser().getAsMention());
+            }
+            long guildId = event.getGuild().getIdLong();
+            //Verificando se o usuario é Administrador ou Mod
+            Member member = event.getMember();
 
-        GuildJoinMessage config = dao.obterPorGuildId(guildId);
-        if (config == null || config.getCanalId() == 0L) {
-            event.reply("<a:catocolorido:1388193166292942968> OPS, o canal de mensagem ainda não foi definido, defina em " +
-                    "/setcanalboasvindas").setEphemeral(true).queue();
-            return;
-        }
-        //Tratamento de nullpointException :)
-        OptionMapping mensagemOpt = event.getOption("user");
-        OptionMapping imagemOpt = event.getOption("imagem");
+            if (member == null || !member.hasPermission(Permission.ADMINISTRATOR)) {
+                event.reply("Apenas um administrador pode executar esse comando " +
+                        "<a:catocolorido:1388193166292942968>").setEphemeral(true).queue();
+                return;
+            }
 
-        String mensagem = (mensagemOpt != null) ? mensagemOpt.getAsString() : null;// recebe a mensagem do usuario
-        String imagemUrl = (imagemOpt != null) ? imagemOpt.getAsString() : null;
-        dao.salvarMensagem(guildId, mensagem, imagemUrl); //salva no banco
+            GuildJoinMessage config = dao.obterPorGuildId(guildId);
+            if (config == null || config.getCanalId() == 0L) {
+                event.reply("<a:catocolorido:1388193166292942968> OPS, o canal de mensagem ainda não foi definido, defina em " +
+                        "/setcanalboasvindas").setEphemeral(true).queue();
+                return;
+            }
+            //Tratamento de nullpointException :)
+            OptionMapping mensagemOpt = event.getOption("user");
+            OptionMapping imagemOpt = event.getOption("imagem");
 
-        event.reply("Mensagem atualizada com sucesso! <a:feliz:1388200507771977832>").setEphemeral(true).queue();
-    }else{
-            event.reply("Este comando só pode ser usado em um servidor.").setEphemeral(true).queue();
+            String mensagem = (mensagemOpt != null) ? mensagemOpt.getAsString() : null;// recebe a mensagem do usuario
+            String imagemUrl = (imagemOpt != null) ? imagemOpt.getAsString() : null;
+            dao.salvarMensagem(guildId, mensagem, imagemUrl); //salva no banco
+
+            event.reply("Mensagem atualizada com sucesso! <a:feliz:1388200507771977832>").setEphemeral(true).queue();
+        } catch (NoGuildException e) {
+            event.reply(e.getMessage()).queue();
         }
     }
 }

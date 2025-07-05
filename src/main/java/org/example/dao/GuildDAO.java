@@ -7,8 +7,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GuildDAO {
+
+    private static final Logger logger = LoggerFactory.getLogger(GuildDAO.class);
 
     // Salva ou atualiza uma guild no banco
     public void salvarGuild(GuildModel guildModel) {
@@ -23,7 +27,7 @@ public class GuildDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] ao salvar servidor {} \nID: {}", guildModel.getNome(), guildModel.getId(), e);
         }
     }
 
@@ -45,7 +49,7 @@ public class GuildDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] ao obter servidor {}", e.getMessage());
         }
         return null;
     }
@@ -61,7 +65,7 @@ public class GuildDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] ao deletar servidor {}", guildId, e);
         }
     }
 }

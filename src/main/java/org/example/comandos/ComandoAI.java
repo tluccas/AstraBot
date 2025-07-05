@@ -8,6 +8,7 @@ import org.example.dao.MemoriaIADAO;
 import org.example.models.Comando;
 import org.example.models.entities.MemoriaIA;
 import org.example.services.AiService;
+import org.example.util.exceptions.NoGuildException;
 
 public class ComandoAI implements Comando {
     private final AiService aiService = new AiService();
@@ -71,7 +72,13 @@ public class ComandoAI implements Comando {
     @Override
     public void executarSlash(SlashCommandInteractionEvent event) {
 
-        if(event.getGuild() != null) {
+        try{
+
+        if(event.getGuild() == null) {
+
+            throw new NoGuildException(event.getUser().getAsMention());
+
+        }
         // recebe a mensagem
         OptionMapping opcao = event.getOption("olá");
         String pergunta = (opcao != null) ? opcao.getAsString() : "";
@@ -116,8 +123,8 @@ public class ComandoAI implements Comando {
 
         // Envia a resposta
         event.getHook().sendMessage(resposta).queue();
-        } else {
-            event.reply("Este comando só pode ser usado em um servidor.").setEphemeral(true).queue();
+        } catch (NoGuildException e) {
+            event.reply(e.getMessage()).queue();
         }
     }
 }

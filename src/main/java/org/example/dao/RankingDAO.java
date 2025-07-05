@@ -11,8 +11,11 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RankingDAO {
+    private static final Logger logger = LoggerFactory.getLogger(RankingDAO.class);
 
     // Salva ou atualiza um ranking (pontos) de um usuário em um servidor
     public void salvarRanking(Ranking ranking) {
@@ -37,7 +40,7 @@ public class RankingDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] Ao salvar ranking\n\nSERVIDOR: {}\n\nUSUARIO: {}", ranking.getGuild_id(), ranking.getUser_id(), e);
         }
     }
 
@@ -69,7 +72,7 @@ public class RankingDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] Ao obter ranking\n\nSERVIDOR: {}\n\nUSUARIO: {}", userId, guildId, e);
         }
 
         return null;
@@ -87,7 +90,7 @@ public class RankingDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] Ao deletar ranking\n\nSERVIDOR: {}\n\nUSUARIO: {}", userId, guildId, e);
         }
     }
 
@@ -118,7 +121,7 @@ public class RankingDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error("[ERRO] Ao listar ranking\n\nSERVIDOR: {}", guildId, e);
         }
 
         return lista;

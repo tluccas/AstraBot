@@ -7,6 +7,7 @@ import org.example.dao.RankingDAO;
 import org.example.models.Comando;
 import org.example.models.entities.Ranking;
 import org.example.services.RankingService;
+import org.example.util.exceptions.NoGuildException;
 
 import java.util.List;
 
@@ -49,8 +50,12 @@ public class RankingComando implements Comando {
 
     @Override
     public void executarSlash(SlashCommandInteractionEvent event) {
-        //CRIAR EXCEÇÃO PERSONALIZADA PARA COMANDOS SLASHS DEPOIS
-        if (event.getGuild() != null) { // O comando só pode ser usado em servidor
+        try{
+            // O comando só pode ser usado em servidor
+        if (event.getGuild() == null) {
+            throw new NoGuildException(event.getUser().getAsMention());
+        }
+
             long guildId = event.getGuild().getIdLong();
 
             // Busca os top 10 usuários
@@ -65,8 +70,8 @@ public class RankingComando implements Comando {
             EmbedBuilder embed = rankingService.getRankingEmbedSlash(topRanking, event);
 
             event.replyEmbeds(embed.build()).queue();
-        } else {
-            event.reply("Este comando só pode ser usado em um servidor.").setEphemeral(true).queue();
+        } catch (NoGuildException e) {
+            event.reply(e.getMessage()).queue();
         }
     }
 }
