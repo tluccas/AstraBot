@@ -4,7 +4,7 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.example.config.Config;
-import org.example.services.moderação.SpamAlertaService;
+import org.example.services.moderacao.SpamAlertaService;
 import org.example.views.BotListener;
 import org.example.views.GuildMemberJoinListener;
 import org.example.views.ReadyListener;
@@ -17,6 +17,7 @@ public class Main {
         try {
             JDA builder = JDABuilder.createDefault(config.getBot_token(),
                     GatewayIntent.GUILD_MESSAGES,
+                    GatewayIntent.GUILD_MEMBERS,
                     GatewayIntent.MESSAGE_CONTENT,
                     GatewayIntent.GUILD_VOICE_STATES,
                     GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
