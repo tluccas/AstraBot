@@ -123,6 +123,7 @@ public class ComandoAI implements Comando {
 
         // Envia a resposta
         event.getHook().sendMessage(resposta).queue();
+
         } catch (NoGuildException e) {
             event.reply(e.getMessage()).queue();
         }
