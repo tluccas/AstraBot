@@ -9,19 +9,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class SpamAlertaService extends ListenerAdapter {
 
     private final Map<String, List<String>> mensagemCache = new HashMap<>();
     private final Map<String, Integer> avisos = new HashMap<>();
     private UserBanService userBanService;
 
+
     public SpamAlertaService() {
         userBanService = new UserBanService();
-    }
 
+    }
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+
+    }
+
+    public void processarSpam(int tolerancia, MessageReceivedEvent event) {
+
         if (event.getAuthor().isBot() || event.getGuild() == null) return;
+
+        if (tolerancia == 0){
+            tolerancia = 4; // numero padrao de tolerancia
+        }
+        int mensagemCacheTol = tolerancia + 2;
 
         String chave = gerarChave(event); // chave é referente a: id do servidor : id do usuário
         String conteudo = event.getMessage().getContentRaw();
@@ -31,50 +43,36 @@ public class SpamAlertaService extends ListenerAdapter {
 
         mensagens.add(conteudo);
 
-        if (mensagens.size() > 9) {
+        if (mensagens.size() > mensagemCacheTol) {
             mensagens.remove(0);
         }
 
-        // Verifica se o usuário enviou 6 mensagens idênticas seguidas
-        if (mensagens.size() >= 6) {
-            boolean spamou = mensagens.subList(mensagens.size() - 6, mensagens.size())
+        // Verifica se o usuário enviou <tolerancia> mensagens idênticas seguidas
+        if (mensagens.size() >= tolerancia) {
+            boolean spamou = mensagens.subList(mensagens.size() - tolerancia, mensagens.size())
                     .stream()
                     .distinct()
                     .count() == 1;
 
             if (spamou) {
+                int avisosAtuais = avisosBan(tolerancia, chave); // incrementa
 
-                avisosBan(chave); // incrementa primeiro
-                int avisosAtuais = getAvisos(chave); // agora pega o valor atualizado
-
-                switch (avisosAtuais) {
-                    case 1:
-                        event.getChannel().sendMessage(event.getAuthor().getAsMention() + " está spammando mensagens repetidas! Você pode ser punido! <:astra_com_raiva:1390824233243906048>" +
-                                "\n[ 1º AVISO ]").queue();
-                        break;
-                    case 2:
-                        event.getChannel().sendMessage(event.getAuthor().getAsMention() + " está spammando mensagens repetidas! Você pode ser punido! <:astra_com_raiva:1390824233243906048>" +
-                                "\n[ 2º AVISO ]").queue();
-                        break;
-                    case 3:
-                        event.getChannel().sendMessage(event.getAuthor().getAsMention() + " está spammando mensagens repetidas! Você pode ser punido! <:astra_com_raiva:1390824233243906048>" +
-                                "\n[ 3º AVISO ]").queue();
-                        break;
-                    case 4:
-                        System.out.println("Tentando banir usuário: " + event.getAuthor().getAsTag());
-                        User user = event.getAuthor();
-                        userBanService.banUser(event, event.getGuild(), user, 1, "Motivo de banimento: Spam");
-                        break;
+                if (avisosAtuais == tolerancia) {
+                    User user = event.getAuthor();
+                    userBanService.banUser(event, event.getGuild(), user, 1, "Motivo: Spam");
+                    avisos.remove(chave);
+                    mensagemCache.remove(chave);
                 }
             }
         }
+
     }
 
-    public int avisosBan(String chave) {
+    public int avisosBan(int tolerancia, String chave) {
         int avisosAtuais = avisos.getOrDefault(chave, 0) + 1;
 
-        if (avisosAtuais > 4) {
-            avisos.remove(chave);
+        if (avisosAtuais > tolerancia) {
+            System.out.println("BAN CHAVE: " + chave);
         } else {
             avisos.put(chave, avisosAtuais);
         }
@@ -88,6 +86,20 @@ public class SpamAlertaService extends ListenerAdapter {
 
     private String gerarChave(MessageReceivedEvent event) {
         return event.getGuild().getId() + ":" + event.getAuthor().getId(); //separa o id do servidor e do usuario no map
+    }
+
+    public String testMAP() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("\n\n📌 AVISOS:\n");
+        avisos.forEach((chave, valor) -> sb.append(" → ").append(chave).append(" = ").append(valor).append("\n"));
+
+        sb.append("\n📌 MENSAGEM CACHE:\n");
+        mensagemCache.forEach((chave, mensagens) -> {
+            sb.append(" → ").append(chave).append(" = ").append(mensagens.size()).append(" mensagens: ").append(mensagens).append("\n");
+        });
+
+        return sb.toString();
     }
 }
 
