@@ -6,22 +6,21 @@ import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import org.example.dao.GuildDAO;
 import org.example.models.entities.GuildModel;
 import org.example.services.SlashCommandRegistryService;
-import org.jetbrains.annotations.NotNull;
+
 
 public class ReadyListener extends ListenerAdapter {
+
+    private final GuildDAO guildDAO = new GuildDAO();
     @Override
     public void onReady(ReadyEvent event) {
 
-        GuildDAO dao = new GuildDAO();
 
         for (Guild guild : event.getJDA().getGuilds()) {
             GuildModel guildModel = new GuildModel(guild.getIdLong(), guild.getName());
-            dao.salvarGuild(guildModel);
+            guildDAO.salvarGuild(guildModel);
         } //atualiza os servidores em que Astra entrou
 
         System.out.println("Servidores salvos no banco.");
@@ -39,13 +38,13 @@ public class ReadyListener extends ListenerAdapter {
     @Override
     public void onGuildJoin(GuildJoinEvent event) { // Salva o servidor no banco sempre que astra entrar
         Guild guild = event.getGuild();
-        new GuildDAO().salvarGuild(new GuildModel(guild.getIdLong(), guild.getName()));
+        guildDAO.salvarGuild(new GuildModel(guild.getIdLong(), guild.getName()));
     }
 
     @Override
     public void onGuildLeave(GuildLeaveEvent event) {
         Guild guild = event.getGuild();
-        new GuildDAO().deletarGuild(new GuildModel(guild.getIdLong(), guild.getName()).getId());
+        guildDAO.deletarGuild(new GuildModel(guild.getIdLong(), guild.getName()).getId());
         System.out.println("Fui removida do servidor: " + guild.getName());
 
     }

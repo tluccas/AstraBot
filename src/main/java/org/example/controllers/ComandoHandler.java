@@ -7,10 +7,7 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import java.util.*;
 
 import org.example.comandos.*;
-import org.example.comandos.testes.TesteBoasVindasComando;
-import org.example.dao.GuildJoinMessageDAO;
 import org.example.models.Comando;
-import org.example.models.ComandoSlash;
 import org.example.services.CommandRegistryService;
 
 public class ComandoHandler {
@@ -64,8 +61,6 @@ public class ComandoHandler {
     }
 
     public TreeMap<String, Comando> getComandos() {
-        TreeMap<String, Comando> comandosOrdenados = new TreeMap<>(comandos);
-        return comandosOrdenados;
-
+        return new TreeMap<>(comandos);
     }
 }
