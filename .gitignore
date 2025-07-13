@@ -35,3 +35,4 @@ build/
 
 .env
 discloud.config
+src/main/java/org/example/comandos/testes
