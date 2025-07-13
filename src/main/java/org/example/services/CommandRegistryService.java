@@ -1,7 +1,6 @@
 package org.example.services;
 
 import org.example.comandos.*;
-import org.example.comandos.testes.TesteBoasVindasComando;
 import org.example.dao.GuildJoinMessageDAO;
 import org.example.dao.RankingDAO;
 import org.example.dao.UserDAO;
@@ -24,10 +23,6 @@ public class CommandRegistryService {
         comandos.add(new DailyComando(new UserDAO(), new RankingDAO()));
         comandos.add(new RankingComando(new RankingDAO()));
         comandos.add(new PiadaComando());
-
-
-        //Comandos de teste
-        comandos.add(new TesteBoasVindasComando(new GuildJoinMessageDAO()));
 
         return comandos;
     }
