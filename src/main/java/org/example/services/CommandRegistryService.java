@@ -23,6 +23,7 @@ public class CommandRegistryService {
         comandos.add(new LimparComando());
         comandos.add(new DailyComando(new UserDAO(), new RankingDAO()));
         comandos.add(new RankingComando(new RankingDAO()));
+        comandos.add(new PiadaComando());
 
 
         //Comandos de teste

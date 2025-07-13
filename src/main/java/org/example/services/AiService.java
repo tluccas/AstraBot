@@ -60,7 +60,7 @@ public class AiService {
         messages.add(usuarioMensagem);
 
         body.add("messages", messages);
-
+    
         Request request = new Request.Builder()
                 .url(API_URL)
                 .addHeader("Authorization", "Bearer " + API_KEY)

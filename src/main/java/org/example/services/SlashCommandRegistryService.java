@@ -21,7 +21,7 @@ public class SlashCommandRegistryService {
 
         comandos.add(Commands.slash("help", "Exibe os comandos disponíveis"));
         comandos.add(Commands.slash("ping", "Responde com pong"));
-        comandos.add(Commands.slash("astra", "Vai te responder utilizando IA <a:robo:1387819870321905684>")
+        comandos.add(Commands.slash("astra", "Vai te responder utilizando IA")
                 .addOption(OptionType.STRING, "olá", "Me fale algo", true));
         comandos.add(Commands.slash("setcanalboasvindas", "Define o canal onde as mensagens de boas vindas serão enviadas")
                 .addOption(OptionType.CHANNEL, "canal", "Canal de boas-vindas", true));
@@ -32,6 +32,7 @@ public class SlashCommandRegistryService {
                 .addOption(OptionType.INTEGER, "quantidade", "Quantidade de mensagens", true));
         comandos.add(Commands.slash("daily", "Resgate seus pontos diários"));
         comandos.add(Commands.slash("rank", "Exibe o ranking do servidor"));
+        comandos.add(Commands.slash("piada", "Astra te conta uma piada"));
 
         return comandos;
     }
