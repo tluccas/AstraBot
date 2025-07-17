@@ -1,6 +1,8 @@
-package org.example.services;
+package org.example.services.registro;
 
 import org.example.comandos.*;
+import org.example.comandos.diversos.MemeComando;
+import org.example.comandos.diversos.PiadaComando;
 import org.example.dao.GuildJoinMessageDAO;
 import org.example.dao.RankingDAO;
 import org.example.dao.UserDAO;
@@ -23,6 +25,7 @@ public class CommandRegistryService {
         comandos.add(new DailyComando(new UserDAO(), new RankingDAO()));
         comandos.add(new RankingComando(new RankingDAO()));
         comandos.add(new PiadaComando());
+        comandos.add(new MemeComando());
 
         return comandos;
     }

@@ -1,6 +1,6 @@
-package org.example.services;
+package org.example.services.api;
 
-import com.google.gson.Gson;
+
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.github.cdimascio.dotenv.Dotenv;
@@ -19,7 +19,6 @@ public class JokeService {
     private static final String JOKE_URL = dotenv.get("JOKE_API_URL");
 
     private final OkHttpClient client = new OkHttpClient();
-    private final Gson gson = new Gson();
 
     public String obterPiada() {
 

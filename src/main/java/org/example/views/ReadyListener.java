@@ -8,7 +8,7 @@ import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.example.dao.GuildDAO;
 import org.example.models.entities.GuildModel;
-import org.example.services.SlashCommandRegistryService;
+import org.example.services.registro.SlashCommandRegistryService;
 
 
 public class ReadyListener extends ListenerAdapter {

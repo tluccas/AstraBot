@@ -1,9 +1,9 @@
-package org.example.comandos;
+package org.example.comandos.diversos;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.example.models.Comando;
-import org.example.services.JokeService;
+import org.example.services.api.JokeService;
 
 
 public class PiadaComando implements Comando {

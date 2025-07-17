@@ -1,13 +1,8 @@
-package org.example.services;
+package org.example.services.registro;
 
-import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import org.example.dao.GuildDAO;
-import org.example.models.entities.GuildModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +28,7 @@ public class SlashCommandRegistryService {
         comandos.add(Commands.slash("daily", "Resgate seus pontos diários"));
         comandos.add(Commands.slash("rank", "Exibe o ranking do servidor"));
         comandos.add(Commands.slash("piada", "Astra te conta uma piada"));
+        comandos.add(Commands.slash("meme", "Envia um meme de qualidade duvidosa"));
 
         return comandos;
     }

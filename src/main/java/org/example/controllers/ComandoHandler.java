@@ -8,7 +8,7 @@ import java.util.*;
 
 import org.example.comandos.*;
 import org.example.models.Comando;
-import org.example.services.CommandRegistryService;
+import org.example.services.registro.CommandRegistryService;
 
 public class ComandoHandler {
 
