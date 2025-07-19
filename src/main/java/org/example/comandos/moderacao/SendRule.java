@@ -9,7 +9,7 @@ import java.awt.Color;
 public class SendRule implements Comando {
     @Override
     public String getNomeComando() {
-        return "rule";
+        return "msg";
     }
 
     @Override
@@ -21,29 +21,10 @@ public class SendRule implements Comando {
     public void executar(MessageReceivedEvent event, String[] args) {
 
         EmbedBuilder emb = new EmbedBuilder();
-        emb.setTitle(" **REGRAS DA COMUNIDADE**");
-        emb.setDescription("\n**1. Proibido conteúdo impróprio **" +
-                "Isso inclui textos, áudios, links ou qualquer tipo de mídia com conteúdo sexual, violento ou perturbador.\n" +
-                "\n" +
-                "**2. Proibido qualquer forma de discriminação**" +
-                "Não toleramos racismo, homofobia, xenofobia, sexismo ou qualquer outra forma de preconceito.\n" +
-                "\n" +
-                "**3. Proibido discussões ofensivas ou provocativas**" +
-                "Evite brigas, ofensas pessoais e tópicos polêmicos que possam gerar conflito desnecessário.\n" +
-                "\n" +
-                "**4. Proibido spam**" +
-                "Não envie mensagens repetitivas, links aleatórios, flood ou divulgações sem autorização da moderação.\n" +
-                "\n" +
-                "**5. Proibido envio de imagens com conteúdo impróprio**" +
-                "Memes ou imagens ofensivas, chocantes, explícitas ou inadequadas não serão permitidas.\n" +
-                "\n" +
-                "**6. Respeite todos os membros**" +
-                "Trate os demais com educação e empatia. Discordâncias são normais, mas sempre com respeito.\n" +
-                "\n" +
-                "**7. Sem pirataria**" +
-                "Não compartilhe, solicite ou incentive o uso de software, jogos, filmes ou qualquer outro conteúdo de forma ilegal.\n" +
-                "\n");
-        emb.setFooter("Regras • Astra");
+        emb.setTitle(" **SITE DA ASTRA**");
+        emb.setDescription("\n**ACESSE: ** https://tluccas.github.io/AstraSite");
+        emb.setImage("https://cdn.discordapp.com/attachments/1395994039324508318/1396180837061492868/SITE.PNG?ex=687d263b&is=687bd4bb&hm=da2b9925b73eb90657b5002517a2dce885dbe46cb63a656645a914e94b8aa6ba&");
+        emb.setFooter("Site • Astra");
         Color color = new Color(59, 226, 220);
         emb.setColor(color);
         event.getChannel().sendMessageEmbeds(emb.build()).queue();
