@@ -1,4 +1,4 @@
-package org.example.views;
+package org.example.views.ready;
 
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.Guild;
@@ -7,6 +7,8 @@ import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.example.dao.GuildDAO;
+import org.example.dao.AutoModDAO;
+import org.example.models.entities.AutoMod;
 import org.example.models.entities.GuildModel;
 import org.example.services.registro.SlashCommandRegistryService;
 
@@ -14,6 +16,7 @@ import org.example.services.registro.SlashCommandRegistryService;
 public class ReadyListener extends ListenerAdapter {
 
     private final GuildDAO guildDAO = new GuildDAO();
+    private final AutoModDAO autoModDAO = new AutoModDAO();
     @Override
     public void onReady(ReadyEvent event) {
 
@@ -21,6 +24,21 @@ public class ReadyListener extends ListenerAdapter {
         for (Guild guild : event.getJDA().getGuilds()) {
             GuildModel guildModel = new GuildModel(guild.getIdLong(), guild.getName());
             guildDAO.salvarGuild(guildModel);
+
+            AutoMod autoModExistente = autoModDAO.obterAutoMod(guild.getIdLong());
+
+            if (autoModExistente == null) {
+                AutoMod novoAutoMod = new AutoMod(guild.getIdLong(), false); // padrão false
+                autoModDAO.salvarAutoMod(novoAutoMod);
+            } else {
+                AutoMod novoAutoMod = new AutoMod(
+                        guild.getIdLong(),
+                        autoModExistente.getSpam_mod()
+                );
+                autoModDAO.salvarAutoMod(novoAutoMod);
+            }
+
+
         } //atualiza os servidores em que Astra entrou
 
         System.out.println("Servidores salvos no banco.");

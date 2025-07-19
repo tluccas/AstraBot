@@ -6,9 +6,11 @@ public class GuildModel { //Model de servidores para o dao
 
     private String nome; //nome do server
 
+
     public GuildModel(long id, String nome) {
         this.id = id;
         this.nome = nome;
+
     }
 
     public long getId() {

@@ -19,11 +19,11 @@ public class MemeAbyssService {
 
     private static final String MEMEABYSS_URL = dotenv.get("MEME_ABYSS_URL");
 
-    private OkHttpClient client = new OkHttpClient();
+    private final OkHttpClient client = new OkHttpClient();
 
     public String obterMemeRandom() {
         Request request = new Request.Builder().url(MEMEABYSS_URL)
-                .addHeader("Content-Type", "application/json").build();;
+                .addHeader("Content-Type", "application/json").build();
 
         try {
 
@@ -37,8 +37,8 @@ public class MemeAbyssService {
 
            JsonObject json = JsonParser.parseString(responseBody).getAsJsonObject();
 
-           String titulo = "";
-           String imgUrl = "";
+           String titulo;
+           String imgUrl;
 
            if(json.has("titulo") && !json.get("titulo").isJsonNull() && json.has("url") && !json.get("url").isJsonNull()) {
                titulo = json.get("titulo").getAsString();

@@ -26,13 +26,12 @@ public class SpamAlertaService extends ListenerAdapter {
 
     }
 
-    public void processarSpam(int tolerancia, MessageReceivedEvent event) {
+    public void processarSpam(MessageReceivedEvent event) {
 
         if (event.getAuthor().isBot() || event.getGuild() == null) return;
 
-        if (tolerancia == 0){
-            tolerancia = 4; // numero padrao de tolerancia
-        }
+        int tolerancia = 4;
+
         int mensagemCacheTol = tolerancia + 2;
 
         String chave = gerarChave(event); // chave é referente a: id do servidor : id do usuário

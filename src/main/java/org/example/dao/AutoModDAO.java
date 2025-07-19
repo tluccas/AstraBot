@@ -1,6 +1,6 @@
 package org.example.dao;
 
-import org.example.models.entities.GuildModel;
+import org.example.models.entities.AutoMod;
 import org.example.util.DataBaseConexao;
 
 import java.sql.Connection;
@@ -10,30 +10,30 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class GuildDAO {
+public class AutoModDAO {
 
-    private static final Logger logger = LoggerFactory.getLogger(GuildDAO.class);
+    private static final Logger logger = LoggerFactory.getLogger(AutoModDAO.class);
 
     // Salva ou atualiza uma guild no banco
-    public void salvarGuild(GuildModel guildModel) {
-        String sql = "INSERT INTO guild (guild_id, nome) VALUES (?, ?) " +
-                "ON DUPLICATE KEY UPDATE nome = VALUES(nome) ";
+    public void salvarAutoMod(AutoMod autoMod) {
+        String sql = "INSERT INTO guild_auto_mod (guild_id,spam_mod) VALUES (?, ?) " +
+                "ON DUPLICATE KEY UPDATE spam_mod = VALUES(spam_mod)";
 
         try (Connection conn = DataBaseConexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setLong(1, guildModel.getId());
-            stmt.setString(2, guildModel.getNome());
+            stmt.setLong(1, autoMod.getGuild_id());
+            stmt.setBoolean(2, autoMod.getSpam_mod());
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            logger.error("[ERRO] ao salvar servidor {} \nID: {}", guildModel.getNome(), guildModel.getId(), e);
+            logger.error("[ERRO] ao salvar AutoMod \nID: {}", autoMod.getGuild_id(), e);
         }
     }
 
-    // Busca uma guild pelo id
-    public GuildModel obterGuild(long guildId) {
-        String sql = "SELECT guild_id, nome FROM guild WHERE guild_id = ?";
+    // Busca uma guild pelo "id"
+    public AutoMod obterAutoMod(long guildId) {
+        String sql = "SELECT guild_id, spam_mod FROM guild_auto_mod WHERE guild_id = ?";
 
         try (Connection conn = DataBaseConexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -42,21 +42,21 @@ public class GuildDAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return new GuildModel(
+                    return new AutoMod(
                             rs.getLong("guild_id"),
-                            rs.getString("nome")
+                            rs.getBoolean("spam_mod")
                     );
                 }
             }
         } catch (SQLException e) {
-            logger.error("[ERRO] ao obter servidor {}", e.getMessage());
+            logger.error("[ERRO] ao obter AutoMod {}", e.getMessage());
         }
         return null;
     }
 
     // Remove uma guild do banco
-    public void deletarGuild(long guildId) {
-        String sql = "DELETE FROM guild WHERE guild_id = ?";
+    public void deletarAutoMod(long guildId) {
+        String sql = "DELETE FROM guild_auto_mod WHERE guild_id = ?";
 
         try (Connection conn = DataBaseConexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -65,7 +65,7 @@ public class GuildDAO {
             stmt.executeUpdate();
 
         } catch (SQLException e) {
-            logger.error("[ERRO] ao deletar servidor {}", guildId, e);
+            logger.error("[ERRO] ao deletar AutoMod {}", guildId, e);
         }
     }
 }

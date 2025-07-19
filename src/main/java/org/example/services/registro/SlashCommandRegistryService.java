@@ -29,7 +29,7 @@ public class SlashCommandRegistryService {
         comandos.add(Commands.slash("rank", "Exibe o ranking do servidor"));
         comandos.add(Commands.slash("piada", "Astra te conta uma piada"));
         comandos.add(Commands.slash("meme", "Envia um meme de qualidade duvidosa"));
-
+        comandos.add(Commands.slash("antispam", "Bane usuários automaticamente ao detectar spam"));
         return comandos;
     }
 }
