@@ -15,7 +15,7 @@
     </properties>
 
     <dependencies>
-        <!-- Suas dependências aqui -->
+        <!-- dependências -->
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>

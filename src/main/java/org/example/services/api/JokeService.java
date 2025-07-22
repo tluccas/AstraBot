@@ -14,9 +14,9 @@ import java.io.IOException;
 public class JokeService {
 
     private static final Logger logger = LoggerFactory.getLogger(JokeService.class);
-    private static final Dotenv dotenv = Dotenv.load();
 
-    private static final String JOKE_URL = dotenv.get("JOKE_API_URL");
+
+    private static final String JOKE_URL = System.getenv("JOKE_API_URL");
 
     private final OkHttpClient client = new OkHttpClient();
 

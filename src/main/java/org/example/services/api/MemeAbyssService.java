@@ -15,9 +15,9 @@ import java.io.IOException;
 public class MemeAbyssService {
 
     private static final Logger logger = LoggerFactory.getLogger(MemeAbyssService.class);
-    private static final Dotenv dotenv = Dotenv.load();
 
-    private static final String MEMEABYSS_URL = dotenv.get("MEME_ABYSS_URL");
+
+    private static final String MEMEABYSS_URL = System.getenv("MEME_ABYSS_URL");
 
     private final OkHttpClient client = new OkHttpClient();
 

@@ -8,11 +8,10 @@ import java.net.SocketTimeoutException;
 
 public class AiService {
 
-    private static final Dotenv dotenv = Dotenv.load();
 
-    private static final String API_URL = dotenv.get("OPENROUTER_API_URL"); // API que irá ser usada (DeepSeek R1)
+    private static final String API_URL = System.getenv("OPENROUTER_API_URL"); // API que irá ser usada (DeepSeek R1)
     private static final String MODEL = "deepseek/deepseek-r1-0528:free";
-    private static final String API_KEY = dotenv.get("OPENROUTER_API_KEY"); // carregando a API do openrouter
+    private static final String API_KEY = System.getenv("OPENROUTER_API_KEY"); // carregando a API do openrouter
 
 
     private final OkHttpClient client = new OkHttpClient();
@@ -27,7 +26,7 @@ public class AiService {
         JsonArray messages = new JsonArray();
 
         // Definindo a personalidade da IA
-        String personalidade = dotenv.get("PERSONALIDADE");
+        String personalidade = System.getenv("PERSONALIDADE");
         JsonObject systemMensagem = new JsonObject();
         systemMensagem.addProperty("role", "system");
         systemMensagem.addProperty("content", personalidade);

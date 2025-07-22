@@ -4,10 +4,10 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class Config {
 
-    private static final Dotenv dotenv = Dotenv.load();
+    private static final String token = System.getenv("DISCORD_BOT_TOKEN");
 
 
     public String getBot_token() {
-        return dotenv.get("DISCORD_BOT_TOKEN");
+        return token;
     }
 }
