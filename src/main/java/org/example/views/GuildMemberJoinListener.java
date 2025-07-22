@@ -1,6 +1,7 @@
 package org.example.views;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -28,9 +29,9 @@ public class GuildMemberJoinListener extends ListenerAdapter {
         String mensagemFormatada = config.getMensagem()
                 .replace("{user}", event.getUser().getAsMention());
 
-
+        Member member = event.getMember();
         EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Bem-vindo(a) ao " + event.getGuild().getName() + " " + event.getUser().getAsMention() + " ! <:astra_feliz:1390381569545343026>");
+        eb.setTitle("Bem-vindo(a) ao " + event.getGuild().getName() + " " + member.getAsMention() + " ! <:astra_feliz:1390381569545343026>");
         eb.setDescription(mensagemFormatada);
         eb.setColor(Color.YELLOW);
         eb.setThumbnail(event.getUser().getEffectiveAvatarUrl());
