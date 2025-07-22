@@ -17,7 +17,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.example.Main</mainClass>
+                            <mainClass>src/main/java/org/example/Main.java</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
