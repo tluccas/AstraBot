@@ -59,7 +59,7 @@ public class SetMsgWelcomeComando implements Comando {
                 return;
             }
             //Tratamento de nullpointException :)
-            OptionMapping mensagemOpt = event.getOption("user");
+            OptionMapping mensagemOpt = event.getOption("mensagem");
             OptionMapping imagemOpt = event.getOption("imagem");
 
             String mensagem = (mensagemOpt != null) ? mensagemOpt.getAsString() : null;// recebe a mensagem do usuario
