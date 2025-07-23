@@ -17,15 +17,13 @@ public class ComandoHandler {
     private static JDA builder;
 
 
-    public ComandoHandler(JDA builder) {
-        this.builder = builder;
+    public ComandoHandler() {
         List<Comando> comandosList = CommandRegistryService.getComandos();
         for (Comando c : comandosList) {
             registrarComando(c);
         }
 
         registrarComando(new ComandoHelp(ComandoHandler.this));
-        registrarComando(new CountComando(builder));
     }
 
 

@@ -9,11 +9,6 @@ import org.example.util.exceptions.NoGuildException;
 
 public class CountComando implements Comando {
 
-    private final JDA builder;
-
-    public CountComando(JDA builder) {
-        this.builder = builder;
-    }
 
     @Override
     public String getNomeComando() {
@@ -28,7 +23,8 @@ public class CountComando implements Comando {
     @Override
     public void executar(MessageReceivedEvent event, String[] args) {
 
-        String resposta = "Olá " + event.getAuthor().getAsMention() + " o bot está em " + contador() + " servidores";
+        int contador = event.getJDA().getGuilds().size();
+        String resposta = "Olá " + event.getAuthor().getAsMention() + " o bot está em " + contador+ " servidores";
 
         event.getChannel().sendMessage(resposta).queue();
     }
@@ -39,8 +35,8 @@ public class CountComando implements Comando {
             if(event.getGuild() == null){
                 throw new NoGuildException(event.getUser().getAsMention());
             }
-
-            String resposta = "Olá " + event.getUser().getAsMention() + " o bot está em " + contador() + " servidores";
+            int contador = event.getJDA().getGuilds().size();
+            String resposta = "Olá " + event.getUser().getAsMention() + " o bot está em " + contador + " servidores";
 
             event.getChannel().sendMessage(resposta).queue();
 
@@ -49,7 +45,4 @@ public class CountComando implements Comando {
         }
     }
 
-    private int contador(){
-        return builder.getGuilds().size();
-    }
 }

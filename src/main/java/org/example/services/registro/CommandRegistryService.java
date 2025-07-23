@@ -1,6 +1,5 @@
 package org.example.services.registro;
 
-import net.dv8tion.jda.api.JDA;
 import org.example.comandos.*;
 import org.example.comandos.diversos.MemeComando;
 import org.example.comandos.diversos.PiadaComando;
@@ -29,6 +28,7 @@ public class CommandRegistryService {
         comandos.add(new PiadaComando());
         comandos.add(new MemeComando());
         comandos.add(new SpamBanEnable());
+        comandos.add(new CountComando());
 
         return comandos;
     }
