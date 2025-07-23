@@ -1,8 +1,11 @@
 package org.example.services.registro;
 
 import org.example.comandos.*;
+import org.example.comandos.CountComando;
 import org.example.comandos.diversos.MemeComando;
 import org.example.comandos.diversos.PiadaComando;
+import org.example.comandos.moderacao.SetMsgWelcomeChannelComando;
+import org.example.comandos.moderacao.SetMsgWelcomeComando;
 import org.example.comandos.moderacao.SpamBanEnable;
 import org.example.dao.GuildJoinMessageDAO;
 import org.example.dao.RankingDAO;
@@ -28,6 +31,7 @@ public class CommandRegistryService {
         comandos.add(new PiadaComando());
         comandos.add(new MemeComando());
         comandos.add(new SpamBanEnable());
+        comandos.add(new CountComando());
 
         return comandos;
     }

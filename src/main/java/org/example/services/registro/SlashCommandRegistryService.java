@@ -30,6 +30,7 @@ public class SlashCommandRegistryService {
         comandos.add(Commands.slash("piada", "Astra te conta uma piada"));
         comandos.add(Commands.slash("meme", "Envia um meme de qualidade duvidosa"));
         comandos.add(Commands.slash("antispam", "Bane usuários automaticamente ao detectar spam"));
+        comandos.add(Commands.slash("servidores", "Exibe em quantos servidores a Astra está trabalhando."));
         return comandos;
     }
 }
