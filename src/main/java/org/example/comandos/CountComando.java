@@ -50,6 +50,6 @@ public class CountComando implements Comando {
     }
 
     private int contador(){
-        return this.builder.getGuilds().size();
+        return builder.getGuilds().size();
     }
 }
