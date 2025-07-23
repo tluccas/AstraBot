@@ -1,13 +1,18 @@
 package org.example.views;
 
+import net.dv8tion.jda.api.JDA;
 import org.example.controllers.ComandoHandler;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class SlashComandoListener extends ListenerAdapter {
+    private static JDA builder;
 
-    private final ComandoHandler comandoHandler = new ComandoHandler();
+    public SlashComandoListener(JDA builder){
+        this.builder = builder;
+    }
+    private final ComandoHandler comandoHandler = new ComandoHandler(builder);
 
     @Override
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {

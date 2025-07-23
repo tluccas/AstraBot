@@ -1,5 +1,6 @@
 package org.example.controllers;
 
+import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
@@ -13,15 +14,18 @@ import org.example.services.registro.CommandRegistryService;
 public class ComandoHandler {
 
     private final Map<String, Comando> comandos = new HashMap<>();
+    private static JDA builder;
 
 
-    public ComandoHandler() {
+    public ComandoHandler(JDA builder) {
+        this.builder = builder;
         List<Comando> comandosList = CommandRegistryService.getComandos();
         for (Comando c : comandosList) {
             registrarComando(c);
         }
 
         registrarComando(new ComandoHelp(ComandoHandler.this));
+        registrarComando(new CountComando(builder));
     }
 
 

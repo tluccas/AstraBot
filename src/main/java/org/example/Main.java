@@ -23,11 +23,12 @@ public class Main {
                     GatewayIntent.MESSAGE_CONTENT,
                     GatewayIntent.GUILD_VOICE_STATES,
                     GatewayIntent.GUILD_EMOJIS_AND_STICKERS,
-                    GatewayIntent.SCHEDULED_EVENTS).addEventListeners(new BotListener(),
-                    new SlashComandoListener(),
+                    GatewayIntent.SCHEDULED_EVENTS).addEventListeners(
                     new ReadyListener(), new GuildMemberJoinListener(), new ReadyAutoModListener(autoModDAO)).build()
             ;
             builder.awaitReady();
+            builder.addEventListener(new BotListener(builder),  new SlashComandoListener(builder));
+            System.out.println("[ BUILD ] Comando Listener Inicializado");
 
 
             System.out.println("\n\nBot iniciado");
