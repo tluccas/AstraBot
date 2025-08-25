@@ -100,6 +100,17 @@ public class ComandoAI implements Comando {
         // responde
         String resposta = aiService.obterResposta(pergunta, memoriaAnterior);
 
+        // Tratamento para excesso de requisições
+        if(resposta.startsWith("Erro da IA (código 429)")){
+            try{
+               Thread.sleep(5000);
+            }catch (InterruptedException e){
+                Thread.currentThread().interrupt();
+                return;
+            }
+
+            resposta = aiService.obterResposta(pergunta, memoriaAnterior);
+        }
 
         int tokensDaResposta = aiService.getTokens();
 

@@ -1,7 +1,6 @@
 package org.example.services;
 
 import com.google.gson.*;
-import io.github.cdimascio.dotenv.Dotenv;
 import okhttp3.*;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
@@ -70,7 +69,8 @@ public class AiService {
         try (Response response = client.newCall(request).execute()) {
 
             if (!response.isSuccessful()) {
-                return "Erro da IA (código " + response.code() + "): " + response.message();
+                System.out.println("[ERRO DA IA] (Código: " + response.code() + ")");
+                return "Erro da IA (código " + response.code() + " )";
             }
 
             String responseBody = response.body().string();

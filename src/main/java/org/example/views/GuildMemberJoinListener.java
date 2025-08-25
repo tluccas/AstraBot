@@ -30,7 +30,9 @@ public class GuildMemberJoinListener extends ListenerAdapter {
                 .replace("{user}", event.getUser().getAsMention());
 
         EmbedBuilder eb = new EmbedBuilder();
+
         eb.setTitle("Bem-vindo(a) ao " + event.getGuild().getName() + " " + event.getUser().getName() + " ! <:astra_feliz:1390381569545343026>");
+
         eb.setDescription(mensagemFormatada);
         eb.setColor(Color.YELLOW);
         eb.setThumbnail(event.getUser().getEffectiveAvatarUrl());

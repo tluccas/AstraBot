@@ -39,7 +39,7 @@ public class MemeComando implements Comando {
 
     @Override
     public void executarSlash(SlashCommandInteractionEvent event) {
-
+        event.deferReply().queue();
         String meme = memeAbyssService.obterMemeRandom();
 
         String[] partes = meme.split("\n");
@@ -52,7 +52,7 @@ public class MemeComando implements Comando {
         eb.setColor(color);
         eb.setTitle(titulo);
         eb.setImage(imgUrl);
-        eb.setFooter("MemeAbyss API • Alves Dev");
+        eb.setFooter("PostAbyss API • Alves Dev");
         event.replyEmbeds(eb.build()).queue();
     }
 }
