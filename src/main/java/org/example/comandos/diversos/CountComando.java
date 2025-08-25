@@ -1,8 +1,7 @@
-package org.example.comandos;
+package org.example.comandos.diversos;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
+
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import org.example.models.Comando;
@@ -48,10 +47,10 @@ public class CountComando implements Comando {
             eb.setColor(Color.RED);
 
 
-            event.getChannel().sendMessageEmbeds(eb.build()).queue();
+            event.replyEmbeds(eb.build()).queue();
 
         }catch (NoGuildException e){
-            event.reply("OPS, envie uma quantidade válida (quantidade min = 2 e máx = 100) <a:cat:1388352178510630952>").queue();
+            event.reply("OPS, esse comando só pode ser usado em um servidor <a:cat:1388352178510630952>").queue();
         }
     }
 

@@ -1,7 +1,7 @@
 package org.example.services.registro;
 
 import org.example.comandos.*;
-import org.example.comandos.CountComando;
+import org.example.comandos.diversos.CountComando;
 import org.example.comandos.diversos.MemeComando;
 import org.example.comandos.diversos.PiadaComando;
 import org.example.comandos.moderacao.SetMsgWelcomeChannelComando;
