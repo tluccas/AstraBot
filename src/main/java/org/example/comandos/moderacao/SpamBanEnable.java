@@ -41,7 +41,7 @@ public class SpamBanEnable implements Comando {
                 AutoMod autoMod = dao.obterAutoMod(event.getGuild().getIdLong());
 
                 if (autoMod == null) {
-                    autoMod = new AutoMod(event.getGuild().getIdLong(), true);
+                    autoMod = new AutoMod(event.getGuild().getIdLong(), true, false);
                 }
 
                 if (!autoMod.getSpam_mod()) {
@@ -82,7 +82,7 @@ public class SpamBanEnable implements Comando {
                 AutoMod autoMod = dao.obterAutoMod(event.getGuild().getIdLong());
 
                 if (autoMod == null) {
-                    autoMod = new AutoMod(event.getGuild().getIdLong(), true);
+                    autoMod = new AutoMod(event.getGuild().getIdLong(), true, false);
                 }
 
                 if (!autoMod.getSpam_mod()) {

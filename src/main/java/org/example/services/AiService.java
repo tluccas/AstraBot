@@ -72,7 +72,7 @@ public class AiService {
 
             if (!response.isSuccessful()) {
                 System.out.println("[ERRO DA IA] (Código: " + response.code() + ")");
-                return "Erro da IA (código " + response.code() + " )";
+                return "Erro da IA (código " + response.code() + ")";
             }
 
             String responseBody = response.body().string();
