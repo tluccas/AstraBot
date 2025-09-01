@@ -31,6 +31,8 @@ public class SlashCommandRegistryService {
         comandos.add(Commands.slash("meme", "Envia um meme de qualidade duvidosa"));
         comandos.add(Commands.slash("antispam", "Bane usuários automaticamente ao detectar spam"));
         comandos.add(Commands.slash("servidores", "Exibe em quantos servidores a Astra está trabalhando."));
+        comandos.add(Commands.slash("autorole", "Ativar/Desativar o cargo automático que os usuários irão receber ao entrar no servidor")
+                .addOption(OptionType.ROLE, "cargo", "Escolha o cargo", true));
         return comandos;
     }
 }

@@ -7,6 +7,8 @@ import org.example.comandos.diversos.PiadaComando;
 import org.example.comandos.moderacao.SetMsgWelcomeChannelComando;
 import org.example.comandos.moderacao.SetMsgWelcomeComando;
 import org.example.comandos.moderacao.SpamBanEnable;
+import org.example.comandos.moderacao.WelcomeRoleComando;
+import org.example.dao.AutoModDAO;
 import org.example.dao.GuildJoinMessageDAO;
 import org.example.dao.RankingDAO;
 import org.example.dao.UserDAO;
@@ -32,6 +34,7 @@ public class CommandRegistryService {
         comandos.add(new MemeComando());
         comandos.add(new SpamBanEnable());
         comandos.add(new CountComando());
+        comandos.add(new WelcomeRoleComando(new AutoModDAO()));
 
         return comandos;
     }

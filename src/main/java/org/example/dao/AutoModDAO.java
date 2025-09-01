@@ -25,6 +25,7 @@ public class AutoModDAO {
 
             stmt.setLong(1, autoMod.getGuild_id());
             stmt.setBoolean(2, autoMod.getSpam_mod());
+            stmt.setBoolean(3, autoMod.getWelcome_auto_role());
             stmt.executeUpdate();
 
         } catch (SQLException e) {
@@ -34,7 +35,7 @@ public class AutoModDAO {
 
     // Busca uma guild pelo "id"
     public AutoMod obterAutoMod(long guildId) {
-        String sql = "SELECT guild_id, spam_mod FROM guild_auto_mod WHERE guild_id = ?";
+        String sql = "SELECT guild_id, spam_mod, welcome_auto_role FROM guild_auto_mod WHERE guild_id = ?";
 
         try (Connection conn = DataBaseConexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -68,6 +69,41 @@ public class AutoModDAO {
 
         } catch (SQLException e) {
             logger.error("[ERRO] ao deletar AutoMod {}", guildId, e);
+        }
+    }
+
+    public void salvarWelcomeRole(long guildId, long roleId) {
+        String sql = "INSERT INTO moderation_roles (guild_id, welcome_role) VALUES (?, ?)" +
+                "ON DUPLICATE KEY UPDATE welcome_role = VALUES(welcome_role)";
+
+        try (Connection conn = DataBaseConexao.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setLong(1, guildId);
+            pstmt.setLong(2, roleId);
+            pstmt.executeUpdate();
+
+        } catch (SQLException e) {
+            logger.error("[ERRO] ao salvar/atualizar moderation_roles", e);
+        }
+    }
+
+    public long searchWelcomeRole(long guildId) {
+        String sql = "SELECT welcome_role FROM moderation_roles WHERE guild_id = ?";
+
+        try (Connection conn = DataBaseConexao.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, guildId);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getLong("welcome_role");
+                }else{
+                    return 0;
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("[ERRO] ao buscar welcome_role", e);
+            return 0;
         }
     }
 }
