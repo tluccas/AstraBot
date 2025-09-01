@@ -28,12 +28,13 @@ public class ReadyListener extends ListenerAdapter {
             AutoMod autoModExistente = autoModDAO.obterAutoMod(guild.getIdLong());
 
             if (autoModExistente == null) {
-                AutoMod novoAutoMod = new AutoMod(guild.getIdLong(), false); // padrão false
+                AutoMod novoAutoMod = new AutoMod(guild.getIdLong(), false, false); // padrão false
                 autoModDAO.salvarAutoMod(novoAutoMod);
             } else {
                 AutoMod novoAutoMod = new AutoMod(
                         guild.getIdLong(),
-                        autoModExistente.getSpam_mod()
+                        autoModExistente.getSpam_mod(),
+                        autoModExistente.getWelcome_auto_role()
                 );
                 autoModDAO.salvarAutoMod(novoAutoMod);
             }
