@@ -16,8 +16,9 @@ public class AutoModDAO {
 
     // Salva ou atualiza uma guild no banco
     public void salvarAutoMod(AutoMod autoMod) {
-        String sql = "INSERT INTO guild_auto_mod (guild_id,spam_mod) VALUES (?, ?) " +
-                "ON DUPLICATE KEY UPDATE spam_mod = VALUES(spam_mod)";
+        String sql = "INSERT INTO guild_auto_mod (guild_id,spam_mod, welcome_auto_role) VALUES (?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE spam_mod = VALUES(spam_mod)," +
+                "welcome_auto_role = VALUES(welcome_auto_role)";
 
         try (Connection conn = DataBaseConexao.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -44,7 +45,8 @@ public class AutoModDAO {
                 if (rs.next()) {
                     return new AutoMod(
                             rs.getLong("guild_id"),
-                            rs.getBoolean("spam_mod")
+                            rs.getBoolean("spam_mod"),
+                            rs.getBoolean("welcome_auto_role")
                     );
                 }
             }
