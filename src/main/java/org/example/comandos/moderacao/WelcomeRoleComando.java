@@ -24,7 +24,7 @@ public class WelcomeRoleComando implements Comando {
 
     @Override
     public String getDescricao() {
-        return "Ativar/Desativar o cargo automático que os usuários irão receber ao entrar no servidor";
+        return "Ativa/Desativa o cargo automático que os usuários irão receber ao entrar no servidor";
     }
 
     @Override

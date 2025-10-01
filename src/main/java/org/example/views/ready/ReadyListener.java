@@ -45,7 +45,7 @@ public class ReadyListener extends ListenerAdapter {
         System.out.println("Servidores salvos no banco.");
         event.getJDA().getPresence().setActivity(Activity.playing("*help \uD83E\uDD16"));
         System.out.println("Bot está pronto e com presença atualizada!");
-       /* Guild guild = event.getJDA().getGuildById("1113547243593678979"); // seu servidor de testes
+       /* Guild guild = event.getJDA().getGuildById("1113547243593678979"); // servidor de testes
 
         if (guild != null) {*/
 
