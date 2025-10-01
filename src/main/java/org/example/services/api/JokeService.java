@@ -3,7 +3,6 @@ package org.example.services.api;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.github.cdimascio.dotenv.Dotenv;
 import okhttp3.*;
 import org.slf4j.LoggerFactory;
 
