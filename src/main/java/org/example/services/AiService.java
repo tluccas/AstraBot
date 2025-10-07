@@ -11,7 +11,7 @@ public class AiService {
     private static final Dotenv dotenv = Dotenv.load();
 
     private static final String API_URL = dotenv.get("OPENROUTER_API_URL"); // API que irá ser usada (DeepSeek R1)
-    private static final String MODEL = "deepseek/deepseek-r1-0528:free";
+    private static final String MODEL = "deepseek/deepseek-chat-v3.1:free";
     private static final String API_KEY = dotenv.get("OPENROUTER_API_KEY"); // carregando a API do openrouter
 
 
